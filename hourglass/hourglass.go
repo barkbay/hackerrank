@@ -2,6 +2,7 @@ package hourglass
 
 import (
 	"bufio"
+	"fmt"
 	"io"
 	"os"
 	"strconv"
@@ -10,27 +11,29 @@ import (
 
 // Matrix is basivally a 3x3 array extracted from a matrix
 type Matrix struct {
-	array [6][6]uint64
+	array [6][6]int64
 }
 
 // Hourglass is basivally a 6x6 array
 type Hourglass struct {
-	array [3][3]uint64
+	array [3][3]int64
 }
 
-func (h *Hourglass) sum() uint64 {
-	var result uint64
-	for _, i := range h.array {
-		for _, j := range i {
-			result += j
+var pattern = [3][3]int64{[3]int64{1, 1, 1}, [3]int64{0, 1, 0}, [3]int64{1, 1, 1}}
+
+func (h *Hourglass) sum() int64 {
+	var result int64
+	for x, i := range h.array {
+		for y, j := range i {
+			result += (j * pattern[x][y])
 		}
 	}
 	return result
 }
 
 // NewHourglass extracts an 3x3 hourglass from a Matrix
-func (m *Matrix) NewHourglass(x, y uint64) Hourglass {
-	result := [3][3]uint64{}
+func (m *Matrix) NewHourglass(x, y int64) Hourglass {
+	result := [3][3]int64{}
 	// Extract the 3 lines
 	subarray := m.array[x : x+3]
 	// line 1
@@ -57,7 +60,7 @@ func NewMatrix(in io.Reader) Matrix {
 	}
 
 	scanner := bufio.NewReader(in)
-	array := [6][6]uint64{}
+	array := [6][6]int64{}
 
 	for i := 0; i < 6; i++ {
 		s, _ := scanner.ReadString('\n')
@@ -65,15 +68,28 @@ func NewMatrix(in io.Reader) Matrix {
 		j := 0
 		for _, v := range ass {
 			value, _ := strconv.ParseUint(v, 10, 64)
-			array[i][j] = uint64(value)
+			array[i][j] = int64(value)
 			j++
 		}
 	}
-
 	return Matrix{array}
+}
 
+// LargestSum computes the sum of all hourglasses
+func (m *Matrix) LargestSum() int64 {
+	var result int64
+	for i := 0; i < 4; i++ {
+		for j := 0; j < 4; j++ {
+			h := m.NewHourglass(int64(i), int64(j))
+			if h.sum() > result {
+				result = h.sum()
+			}
+		}
+	}
+	return result
 }
 
 func main() {
-	NewMatrix(nil)
+	m := NewMatrix(nil)
+	fmt.Printf("%d\n", m.LargestSum())
 }
