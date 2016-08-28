@@ -78,9 +78,14 @@ func NewMatrix(in io.Reader) Matrix {
 // LargestSum computes the sum of all hourglasses
 func (m *Matrix) LargestSum() int64 {
 	var result int64
+	var first = true
 	for i := 0; i < 4; i++ {
 		for j := 0; j < 4; j++ {
 			h := m.NewHourglass(int64(i), int64(j))
+			if first {
+				result = h.sum()
+				first = false
+			}
 			if h.sum() > result {
 				result = h.sum()
 			}
