@@ -67,7 +67,7 @@ func NewMatrix(in io.Reader) Matrix {
 		ass := strings.Split(strings.TrimRight(s, "\n"), " ")
 		j := 0
 		for _, v := range ass {
-			value, _ := strconv.ParseUint(v, 10, 64)
+			value, _ := strconv.ParseInt(v, 10, 64)
 			array[i][j] = int64(value)
 			j++
 		}

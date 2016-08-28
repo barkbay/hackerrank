@@ -9,7 +9,7 @@ import (
 
 func TestNewMatrix(t *testing.T) {
 	f1 := strings.NewReader(
-		`1 1 1 0 0 0
+		`-1 1 1 0 0 0
 0 1 0 0 0 0
 1 1 1 0 0 0
 0 0 2 4 4 0
@@ -26,7 +26,7 @@ func TestNewMatrix(t *testing.T) {
 	}
 
 	expectedMatrix := [6][6]int64{
-		[6]int64{1, 1, 1, 0, 0, 0},
+		[6]int64{-1, 1, 1, 0, 0, 0},
 		[6]int64{0, 1, 0, 0, 0, 0},
 		[6]int64{1, 1, 1, 0, 0, 0},
 		[6]int64{0, 0, 2, 4, 4, 0},
@@ -116,6 +116,20 @@ func TestMaxtrixSum2(t *testing.T) {
 0 0 -1 -2 -4 0`)
 	m := NewMatrix(f1)
 	if m.LargestSum() != 13 {
+		t.Fail()
+	}
+}
+
+func TestMaxtrixSum3(t *testing.T) {
+	f1 := strings.NewReader(
+		`1 1 1 0 0 0
+0 1 0 0 0 0
+1 1 1 0 0 0
+0 9 2 -4 4 0
+0 0 0 -2 2 0
+0 0 -1 -2 4 10`)
+	m := NewMatrix(f1)
+	if m.LargestSum() != 14 {
 		t.Fail()
 	}
 }
