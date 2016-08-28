@@ -18,6 +18,16 @@ type Hourglass struct {
 	array [3][3]uint64
 }
 
+func (h *Hourglass) sum() uint64 {
+	var result uint64
+	for _, i := range h.array {
+		for _, j := range i {
+			result += j
+		}
+	}
+	return result
+}
+
 // NewHourglass extracts an 3x3 hourglass from a Matrix
 func (m *Matrix) NewHourglass(x, y uint64) Hourglass {
 	result := [3][3]uint64{}
